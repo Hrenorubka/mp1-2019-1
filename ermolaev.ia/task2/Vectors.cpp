@@ -1,7 +1,5 @@
 #include <iostream>
 
-
-
 using namespace std;
 
 class Vectors
@@ -16,24 +14,47 @@ public:
 		length = 0;
 	}
 
+	Vectors(int len, double *mas)
+	{
+		length = len;
+		a = new double[length];
+		for (int i = 0; i < length; i++)
+			a[i] = mas[i];
+	}
+
+	Vectors(const Vectors &v)
+	{
+		length = v.length;
+		a = new double[length];
+		for (int i = 0; i < length; i++)
+			a[i] = v.a[i];
+		cout << "xyi\n";
+	}
+
 	~Vectors()
 	{
-
+		delete[] a;
 	}
 
-	void innum(int num)
+	void innum(int num, double znach)
 	{
-		cin >> a[num];
+		if (num < length)
+			a[num] = znach;
+		else
+		{
+			cout << "num > length of vector";
+		}
 	}
 
-	void innum()
+	void innum(double *mas)
 	{
 		for (int i = 0; i < length; i++)
 		{
-			cin >> a[i];
+			a[i] = mas[i];
 		}
 	}
-	void  out()
+
+	const void  out()
 	{
 		cout << a[0] << " * x0";
 		for (int i = 1; i < length; i++)
@@ -41,24 +62,26 @@ public:
 		cout << "\n";
 	}
 
-	void  out_num(int num)
+	const int out_num(int num)
 	{
-		cout << a[num] << "\n";
+		return a[num];
 	}
 
 	void inlen(int len)
 	{
+		if (length != 0)
+			delete a;
 		length = len;
 		if (length <= 0)
 			throw;
 		a = new double[length];
 	}
-	void  lenout()
+	const int  lenout()
 	{
-		cout << length << "\n";
+		return length;
 	}
 
-	double len_v()
+	const double len_v()
 	{
 		double v = 0;
 		for (int i = 0; i < length; i++)
@@ -69,7 +92,7 @@ public:
 		return v;
 	}
 
-	double skal_proiz(const Vectors& v)
+	const double skal_proiz(const Vectors& v)
 	{
 		double proiz = 0;
 		if (length != v.length)
@@ -81,7 +104,7 @@ public:
 
 	Vectors& operator=(const Vectors& v)
 	{
-		Delete();
+
 		inlen(v.length);
 		for (int i = 0; i < length; i++)
 			a[i] = v.a[i];
@@ -94,14 +117,10 @@ public:
 		sum.inlen(length);
 		for (int i = 0; i < length; i++)
 			sum.a[i] = a[i] + v.a[i];
-
 		return sum;
 	}
 
-	void Delete()
-	{
-		delete a;
-	}
+
 };
 
 
@@ -110,7 +129,9 @@ void main()
 {
 
 	Vectors trre, errt, sum;
-	int num;
+	int num, obl_i;
+	double obl_d;
+	double *pop;
 	bool fl = 1;
 	while (fl)
 	{
@@ -118,19 +139,33 @@ void main()
 		cin >> num;
 		trre.inlen(num);
 		cout << "input coordinates first vector\n";
-		trre.innum();
+		pop = new double[num];
+		for (int i = 0; i < num; i++)
+		{
+			cin >> pop[i];
+		}
+		trre.innum(pop);
+		delete pop;
 		cout << "input num of component\n";
 		cin >> num;
 		cout << "This component:\n";
-		trre.out_num(num - 1);
+		obl_d = trre.out_num(num - 1);
+		cout << obl_d << "\n";
 		cout << "size of this vector\n";
-		trre.lenout();
+		obl_i = trre.lenout();
+		cout << obl_i << "\n";
 		cout << "length of this vector:\n" << trre.len_v() << "\n";
 		cout << "input size second vector\n";
 		cin >> num;
 		errt.inlen(num);
 		cout << "input coordinates second vector\n";
-		errt.innum();
+		pop = new double[num];
+		for (int i = 0; i < num; i++)
+		{
+			cin >> pop[i];
+		}
+		errt.innum(pop);
+		delete pop;
 		cout << "their summ:\n";
 		sum = trre + errt;
 		sum.out();
