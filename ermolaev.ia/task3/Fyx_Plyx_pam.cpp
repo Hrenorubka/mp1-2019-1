@@ -13,35 +13,34 @@ class menu
 {
 	int Number_commands;
 	string *Name_comand;
-	int Plyx_pyx_pyx_pyx_pyx_plyX;
+	int To_be_or_not_to_be;
 	void Set_cursor(int x, int y) const;
-	void StrCopy(string str, int num);
 	func * m;
 public:
-	menu() { Number_commands = 0; Plyx_pyx_pyx_pyx_pyx_plyX = 0; };
+	menu() { Number_commands = 0; To_be_or_not_to_be = 0; };
 	menu(int a);
 	menu(const menu &v);
-	~menu() { delete Name_comand; cout << "I has been deleted \n"; }
+	~menu() { delete[] Name_comand; }
 	void Set_Num_of_com(int a);
-	int G_N_O_C() const; // Get_numbers_of_commands
-	void Set_Name_of_Command(int a, string name);
+	int Get_numbers_of_commands() const;
+	void Set_Name_of_Command(int a, string &name);
 	void Get_menu(int x, int y) const;
-	void Choose_number(int num);
-	int Last_choice() { if (Plyx_pyx_pyx_pyx_pyx_plyX == 0) throw(4);  return Plyx_pyx_pyx_pyx_pyx_plyX; }
+	int Choose_number(int num);
+	int Last_choice() { if (To_be_or_not_to_be == 0) throw(4);  return To_be_or_not_to_be; }
 };
 
 menu::menu(int a)
 {
 	Number_commands = a;
 	Name_comand = new string[a];
-	Plyx_pyx_pyx_pyx_pyx_plyX = 0;
+	To_be_or_not_to_be = 0;
 }
 
 menu::menu(const menu &v)
 {
 	Number_commands = v.Number_commands;
 	*Name_comand = *v.Name_comand;
-	Plyx_pyx_pyx_pyx_pyx_plyX = v.Plyx_pyx_pyx_pyx_pyx_plyX;
+	To_be_or_not_to_be = v.To_be_or_not_to_be;
 }
 
 void menu::Set_Num_of_com(int a)
@@ -49,25 +48,20 @@ void menu::Set_Num_of_com(int a)
 	if (a <= 0)
 		throw(1);
 	Number_commands = a;
-	delete Name_comand;
+	delete[] Name_comand;
 	Name_comand = new string[a];
 	m = new func[Number_commands];
 
 }
 
-int menu::G_N_O_C() const
+int menu::Get_numbers_of_commands() const
 {
 	if (Number_commands == 0)
 		throw(2);
 	return Number_commands;
 }
 
-void menu::StrCopy(string a, int num)
-{
-	Name_comand[num - 1] = a;
-}
-
-void menu::Set_Name_of_Command(int a, string name)
+void menu::Set_Name_of_Command(int a, string &name)
 {
 	if (Number_commands == 0)
 		throw 2;
@@ -75,7 +69,7 @@ void menu::Set_Name_of_Command(int a, string name)
 		throw 3;
 	else if (a <= 0)
 		throw 1;
-	StrCopy(name, a);
+	Name_comand[a] = name;
 	cout << "String has been seted\n";
 }
 
@@ -98,15 +92,14 @@ void menu::Set_cursor(int x, int y) const
 	SetConsoleCursorPosition(output, pos);
 }
 
-void menu::Choose_number(int num)
+int menu::Choose_number(int num)
 {
 	if (num > Number_commands)
 		throw(3);
 	else if (num <= 0)
 		throw(1);
-	Plyx_pyx_pyx_pyx_pyx_plyX = num;
-	//m[num - 1]();
-	cout << "Your choise " << num << ". " << Name_comand[num - 1] << "\n";
+	To_be_or_not_to_be = num;
+	return num;
 }
 
 
@@ -136,7 +129,7 @@ void main()
 			}
 			case 2:
 			{
-				cout << "Quantity of commands in menu:" << Wrath.G_N_O_C() << "\n";
+				cout << "Quantity of commands in menu:" << Wrath.Get_numbers_of_commands() << "\n";
 				break;
 			}
 			case 3:
@@ -169,7 +162,7 @@ void main()
 						int choose;
 						cout << "Choose one of the point\n";
 						cin >> choose;
-						Wrath.Choose_number(choose);
+						cout << "Number your command: " << Wrath.Choose_number(choose);
 						break;
 					}
 					case 2:
